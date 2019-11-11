@@ -3,45 +3,28 @@
 #include "libMMMt.h"
 #include "libMMMf.h"
 
-
-void mmm_ProcessEvent(midiPacket &pck){         
-  for (int r=0;r<userRuleCount;r++){     
-    if (userRules[r]->ruleTrigger == pck.packet[1]) {        
-      for (int u=0;u<userRules[r]->numUnits;u++){
-        userUnit* mru = userUnits[userRules[r]->units.units[u]];
-        (unitFunctions[mru->unitFnIdx].fnFn)(&pck,mru->unitParams);                   
-      }
+void lib3m_ProcessEvent(midiPacket &pck)
+{            
+    for (int u=0;u<userUnitCount;u++){
+        userUnit *uu = userUnits[u];
+        (unitFunctions[uu->unitFnIdx].fnFn)( &pck, uu->x, uu->y, uu->x1, uu->y1 );                       
     }
-  }
 } 
 
-void addUserUnit(char title[32], uint8_t function, uint32_t params){
+void lib3m_AddModuleUnit(char cmd[4], uint8_t fnIdx, uint8_t x, uint8_t y, uint8_t x1, uint8_t y1)
+{
 
     userUnit* uup = (userUnit*)malloc(sizeof(userUnit)); 
-    
-    userUnit u;
-    strlcpy(u.unitTitle,title,sizeof(u.unitTitle));
-    u.unitFnIdx = function;
-    u.unitParams.i = params;
-    
-    *uup = u; 
-    
+
+    strlcpy(uup->command,cmd,sizeof(*uup->command));
+    uup->unitFnIdx = fnIdx;
+    uup->x = x; 
+    uup->y = y;
+    uup->x1 = x1; 
+    uup->y1 = y1;
+
     userUnits[userUnitCount++] = uup;
     
 }
 
-void addUserRule(char title[32], uint8_t trigger, uint8_t numUnits, struct uint4 units){
 
-    userRule* ul = (userRule*)malloc(sizeof(userRule)); 
-    
-    userRule r;
-    strlcpy(r.ruleTitle,title,sizeof(r.ruleTitle));
-    r.ruleTrigger = trigger;
-    r.numUnits = numUnits;
-    r.units = units;
-  
-    *ul = r; 
-    
-    userRules[userRuleCount++] = ul;
-    
-}
