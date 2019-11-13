@@ -1,30 +1,39 @@
 #pragma once 
 
-#include "libMMMt.h"
-#include "libMMMf.h"
+#include "libMMM_t.h"
+#include "libMMM_f.h"
+
+const struct modUnit modUnits[] = {
+    {"gtn", &lib3m_offsetB2             },
+    {"gvo", &lib3m_offsetB3             },
+    {"gvs", &lib3m_setB3                },
+    {"ctn", &lib3m_offsetB2IfChannel    },
+    {"cvo", &lib3m_offsetB3IfChannel    },
+    {"cvs", &lib3m_setB3IfChannel       },
+    {"chs", &lib3m_setChannel           },
+    {"chm", &lib3m_mapChannel           },
+    {"ccm", &lib3m_mapB2                },
+    {"pcm", &lib3m_mapB2                },
+    {"evm", &lib3m_mapB1                },
+    {"lsp", &lib3m_splitKb              }
+};
+
+userUnit* userUnits[16];
+uint8_t userUnitCount = 0;
+
+void lib3m_AddUserUnit(uint8_t mUnitIdx, uint8_t x, uint8_t y, uint8_t z)
+{
+    userUnit* uu = (userUnit*)malloc(sizeof(userUnit)); 
+    uu->mUnitIdx = mUnitIdx;
+    uu->x = x;
+    uu->y = y;
+    uu->z = z;
+    userUnits[userUnitCount++] = uu;   
+}
 
 void lib3m_ProcessEvent(midiPacket &pck)
 {            
     for (int u=0;u<userUnitCount;u++){
-        userUnit *uu = userUnits[u];
-        (unitFunctions[uu->unitFnIdx].fnFn)( &pck, uu->x, uu->y, uu->x1, uu->y1 );                       
+        if (!uz||stsd==uz)(modUnits[uix].fnFn)(&pck, ux, uy, uz);
     }
 } 
-
-void lib3m_AddModuleUnit(char cmd[4], uint8_t fnIdx, uint8_t x, uint8_t y, uint8_t x1, uint8_t y1)
-{
-
-    userUnit* uup = (userUnit*)malloc(sizeof(userUnit)); 
-
-    strlcpy(uup->command,cmd,sizeof(*uup->command));
-    uup->unitFnIdx = fnIdx;
-    uup->x = x; 
-    uup->y = y;
-    uup->x1 = x1; 
-    uup->y1 = y1;
-
-    userUnits[userUnitCount++] = uup;
-    
-}
-
-
