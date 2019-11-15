@@ -1,6 +1,5 @@
 
-/* 
-    LIB3M 
+/*  LIB3M 
     Jesper Christensen 2019
     https://github.com/orzdk/libMMM
 */

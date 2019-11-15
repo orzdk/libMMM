@@ -1,22 +1,34 @@
+
+/*  LIB3M 
+    Jesper Christensen 2019
+    https://github.com/orzdk/libMMM
+*/
+
 #ifndef _LIB3M_T_H_
 #define _LIB3M_T_H_
 #pragma once 
 
-#define TRANSFORMERS_PR_CHANNEL 3
+#define TRANSFORMERS_PR_CHANNEL 2
 
-#define L3M_CABLE_CMD EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tCmdCode
-#define L3M_CABLE_PARMS EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tParms
-#define L3M_CABLE_GATE EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate
-#define L3M_CABLE_TSTSF_LOWER EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate.gate.lower
-#define L3M_CABLE_TSTSF_UPPER EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate.gate.upper
-#define L3M_CABLE_TF_IN_USE_COUNT EEPROM_Params.cableTransformers[sourcePort].inUseCount
+#define L3M_CABLE_CMD               EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tCmdCode
+#define L3M_CABLE_PARMS             EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tParms
+#define L3M_CABLE_GATE              EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate
+#define L3M_CABLE_TSTSF_LOWER       EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate.gate.lower
+#define L3M_CABLE_TSTSF_UPPER       EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate.gate.upper
+#define L3M_CABLE_TSTSF_LOWER_SLOT  EEPROM_Params.cableTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.lower
+#define L3M_CABLE_TSTSF_UPPER_SLOT  EEPROM_Params.cableTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.upper
+#define L3M_CABLE_TSTSF_BYTE_B      EEPROM_Params.cableTransformers[sourcePort].transformers[slot].tByte[b]
+#define L3M_CABLE_TF_IN_USE_COUNT   EEPROM_Params.cableTransformers[sourcePort].inUseCount
 
-#define L3M_SERIAL_CMD EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tCmdCode
-#define L3M_SERIAL_PARMS EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tParms
-#define L3M_SERIAL_GATE EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate
-#define L3M_SERIAL_TSTSF_LOWER EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate.gate.lower
-#define L3M_SERIAL_TSTSF_UPPER EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate.gate.upper
-#define L3M_SERIAL_TF_IN_USE_COUNT EEPROM_Params.serialTransformers[sourcePort].inUseCount
+#define L3M_SERIAL_CMD              EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tCmdCode
+#define L3M_SERIAL_PARMS            EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tParms
+#define L3M_SERIAL_GATE             EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate
+#define L3M_SERIAL_TSTSF_LOWER      EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate.gate.lower
+#define L3M_SERIAL_TSTSF_UPPER      EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate.gate.upper
+#define L3M_SERIAL_TSTSF_LOWER_SLOT EEPROM_Params.serialTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.lower
+#define L3M_SERIAL_TSTSF_UPPER_SLOT EEPROM_Params.serialTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.upper
+#define L3M_SERIAL_TSTSF_BYTE_B     EEPROM_Params.serialTransformers[sourcePort].transformers[slot].tByte[b]
+#define L3M_SERIAL_TF_IN_USE_COUNT  EEPROM_Params.serialTransformers[sourcePort].inUseCount
 
 #define BETWEEN(value, min, max) (value <= max && value >= min)
 
@@ -50,7 +62,7 @@ typedef struct  {
 } __packed transformerPacket_t;
 
 
-typedef union  {    //cmd, cmd, parm, parm, parm, parm, gate, gate
+typedef union  { 
     uint64_t i;
     uint8_t tByte[8]; 
     transformerPacket_t tPacket; 
@@ -60,7 +72,7 @@ typedef union  {    //cmd, cmd, parm, parm, parm, parm, gate, gate
 typedef struct {
       midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];
       uint8_t inUseCount;    
-} __packed channelTransformers_t; // = three transformers
+} __packed channelTransformers_t; 
 
 
 struct tCommand{
@@ -83,6 +95,33 @@ enum tCodes{
     pcm = 0xA,
     evm = 0xB,
     lsp = 0xC
+};
+
+
+uint16_t midiStatusValArr[23] = {
+    0x80,
+    0x90,
+    0xA0,
+    0xB0,
+    0xC0,
+    0xD0,
+    0xE0,
+    0xF0,
+    0xF1,
+    0xF2,
+    0xF3,
+    0xF4,
+    0xF5,
+    0xF6,
+    0xF7,
+    0xF8,
+    0xF9,
+    0xFA,
+    0xFB,
+    0xFC,
+    0xFD,
+    0xFE,
+    0xFF
 };
 
 enum midiStatusValue {
@@ -110,5 +149,8 @@ enum midiStatusValue {
     stsACTIVESENSE  = 0xFE,
     stsSYSTEMRESET  = 0xFF
 };   
+
+uint8_t IToSts(uint8_t i){ return midiStatusValArr[i]; }
+uint8_t StsToI(uint8_t b1) { return b1 < 0xF1 ? (b1 >> 4) : ((b1 & 0x0F) -1) + 0x10; }
 
 #endif

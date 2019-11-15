@@ -1,8 +1,16 @@
+
+/*  LIB3M 
+    Jesper Christensen 2019
+    https://github.com/orzdk/libMMM
+*/
+
 #ifndef _LIB3M_F_H_
 #define _LIB3M_F_H_
 #pragma once 
 
-void lib3m_idle(midiPacket_t* pk, transformerParms_t tp){}
+void lib3m_idle(midiPacket_t* pk, transformerParms_t tp){
+
+}
 
 void lib3m_offsetB2(midiPacket_t* pk, transformerParms_t tp){ 
     pb2 += tp.x;
