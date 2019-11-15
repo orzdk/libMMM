@@ -1,46 +1,51 @@
 #pragma once 
 
-#define uix userUnits[u]->mUnitIdx
-#define ux userUnits[u]->x
-#define uy userUnits[u]->y
-#define uz userUnits[u]->z
-#define sts ((pck->packet[1] & 0xF0) >> 4)
-#define stsd ((pck.packet[1] & 0xF0) >> 4)
-#define chn (pck->packet[1] & 0x0F)
-#define pb1 pck->packet[1]
-#define pb2 pck->packet[2]
-#define pb3 pck->packet[3]
+#define TRANSFORMERS_PR_CHANNEL 3
+#define L3M_CABLE_CMD EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tByte
+#define L3M_CABLE_PARMS EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tParms
+#define L3M_SERIAL_CMD EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tByte
+#define L3M_SERIAL_PARMS EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tParms
+
+typedef struct  {
+  uint8_t  x;
+  uint8_t  y;
+  uint8_t  z;
+} __packed transformerParms_t;
+
+typedef struct  {
+  uint8_t  tByte;
+  transformerParms_t tParms;
+} __packed transformerPacket_t;
 
 typedef union  {
-     uint32_t i;
-     uint8_t  packet[4];
-} midiPacket;
+    uint32_t i;
+    uint8_t tByte[4];
+    transformerPacket_t tPacket;
+} __packed midiTransformer_t;
+
+typedef struct {
+      midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];
+} __packed channelTransformer_t;
 
 struct modUnit{
     char* command;
-    void (*fnFn)(midiPacket* pck, uint8_t x, uint8_t y, uint8_t z);
+    void (*fnFn)(midiPacket_t* pck, transformerParms_t tp);
 };
 
-struct userUnit {
-    uint8_t mUnitIdx;
-    uint8_t x; 
-    uint8_t y;
-    uint8_t z; 
-};
-
-enum units{
-    gtn = 0x0,
-    gvo = 0x1,
-    gvs = 0x2,
-    ctn = 0x3,
-    cvo = 0x4,
-    cvs = 0x5,
-    chs = 0x6,
-    chm = 0x7,
-    ccm = 0x8,
-    pcm = 0x9,
-    evm = 0xA,
-    lsp = 0xB
+enum tfs{
+    idl = 0x0,
+    gtn = 0x1,
+    gvo = 0x2,
+    gvs = 0x3,
+    ctn = 0x4,
+    cvo = 0x5,
+    cvs = 0x6,
+    chs = 0x7,
+    chm = 0x8,
+    ccm = 0x9,
+    pcm = 0xA,
+    evm = 0xB,
+    lsp = 0xC
 };
 
 enum midiStatusValue {
