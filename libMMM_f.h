@@ -1,6 +1,7 @@
 
 /*  LIB3M 
     Jesper Christensen 2019
+    Transformer Functions
     https://github.com/orzdk/libMMM
 */
 

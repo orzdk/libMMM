@@ -1,6 +1,7 @@
 
 /*  LIB3M 
     Jesper Christensen 2019
+    Main Include Header. Put all three files in libMMM folder in Arduino Library Folder
     https://github.com/orzdk/libMMM
 */
 

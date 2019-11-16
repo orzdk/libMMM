@@ -1,5 +1,6 @@
 
 /*  LIB3M 
+    Type Definitions
     Jesper Christensen 2019
     https://github.com/orzdk/libMMM
 */
@@ -8,27 +9,15 @@
 #define _LIB3M_T_H_
 #pragma once 
 
-#define TRANSFORMERS_PR_CHANNEL 2
+#define L3M_CABLE_TR_UNIT           EEPROM_Params.cableTransformers[sourcePort]
+#define L3M_CABLE_TR_SLOT           L3M_CABLE_TR_UNIT.transformers[slot]
+#define L3M_CABLE_TR_IS_EVENT_TR    L3M_CABLE_TR_SLOT.tByte[0] == 0xB
+#define L3M_CABLE_TR_GATE           L3M_CABLE_TR_SLOT.tPacket.tGate.gate
 
-#define L3M_CABLE_CMD               EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tCmdCode
-#define L3M_CABLE_PARMS             EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tParms
-#define L3M_CABLE_GATE              EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate
-#define L3M_CABLE_TSTSF_LOWER       EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate.gate.lower
-#define L3M_CABLE_TSTSF_UPPER       EEPROM_Params.cableTransformers[sourcePort].transformers[t].tPacket.tGate.gate.upper
-#define L3M_CABLE_TSTSF_LOWER_SLOT  EEPROM_Params.cableTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.lower
-#define L3M_CABLE_TSTSF_UPPER_SLOT  EEPROM_Params.cableTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.upper
-#define L3M_CABLE_TSTSF_BYTE_B      EEPROM_Params.cableTransformers[sourcePort].transformers[slot].tByte[b]
-#define L3M_CABLE_TF_IN_USE_COUNT   EEPROM_Params.cableTransformers[sourcePort].inUseCount
-
-#define L3M_SERIAL_CMD              EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tCmdCode
-#define L3M_SERIAL_PARMS            EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tParms
-#define L3M_SERIAL_GATE             EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate
-#define L3M_SERIAL_TSTSF_LOWER      EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate.gate.lower
-#define L3M_SERIAL_TSTSF_UPPER      EEPROM_Params.serialTransformers[sourcePort].transformers[t].tPacket.tGate.gate.upper
-#define L3M_SERIAL_TSTSF_LOWER_SLOT EEPROM_Params.serialTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.lower
-#define L3M_SERIAL_TSTSF_UPPER_SLOT EEPROM_Params.serialTransformers[sourcePort].transformers[slot].tPacket.tGate.gate.upper
-#define L3M_SERIAL_TSTSF_BYTE_B     EEPROM_Params.serialTransformers[sourcePort].transformers[slot].tByte[b]
-#define L3M_SERIAL_TF_IN_USE_COUNT  EEPROM_Params.serialTransformers[sourcePort].inUseCount
+#define L3M_SERIAL_TR_UNIT          EEPROM_Params.serialTransformers[sourcePort]
+#define L3M_SERIAL_TR_SLOT          L3M_SERIAL_TR_UNIT.transformers[slot]
+#define L3M_SERIAL_TR_IS_EVENT_TR   L3M_SERIAL_TR_SLOT.tByte[0] == 0xB
+#define L3M_SERIAL_TR_GATE          L3M_CABLE_TR_SLOT.tPacket.tGate.gate
 
 #define BETWEEN(value, min, max) (value <= max && value >= min)
 
@@ -98,7 +87,7 @@ enum tCodes{
 };
 
 
-uint16_t midiStatusValArr[23] = {
+uint8_t midiStatusValArr[23] = {
     0x80,
     0x90,
     0xA0,
@@ -150,7 +139,12 @@ enum midiStatusValue {
     stsSYSTEMRESET  = 0xFF
 };   
 
-uint8_t IToSts(uint8_t i){ return midiStatusValArr[i]; }
-uint8_t StsToI(uint8_t b1) { return b1 < 0xF1 ? (b1 >> 4) : ((b1 & 0x0F) -1) + 0x10; }
+uint8_t IToSts(uint8_t tCode, uint8_t i){ 
+    return (tCode != 0xB) ? i : midiStatusValArr[i]; 
+}
+
+uint8_t StsToI(uint8_t tCode, uint8_t b1) { 
+    return (tCode != 0xB) ? b1 : b1 < 0xF1 ? (b1 >> 4) : ((b1 & 0x0F) -1) + 0x10; 
+}
 
 #endif
