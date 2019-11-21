@@ -26,7 +26,7 @@ void lib3m_setB3(midiPacket_t* pk, transformerParms_t tp){
 }
 
 void lib3m_setChannel(midiPacket_t* pk, transformerParms_t tp){
-    pb1 = sts | tp.x;
+    pb1 = psts | tp.x;
 }
 
 void lib3m_mapB1(midiPacket_t* pk, transformerParms_t tp){
@@ -38,27 +38,29 @@ void lib3m_mapB2(midiPacket_t* pk, transformerParms_t tp){
 }
 
 void lib3m_mapChannel(midiPacket_t* pk, transformerParms_t tp){
-    if (chn == tp.x) pb1 = sts | tp.y;
+    if (pchn == tp.x) pb1 = psts | tp.y;
 }
 
 void lib3m_offsetB2IfChannel(midiPacket_t* pk, transformerParms_t tp){
-    if (chn == tp.x) pb2 += tp.y;
+    if (pchn == tp.x) pb2 += tp.y;
 }
 
 void lib3m_offsetB3IfChannel(midiPacket_t* pk, transformerParms_t tp){
-    if (chn == tp.x) pb3 += tp.y;
+    if (pchn == tp.x) pb3 += tp.y;
 }
 
 void lib3m_setB3IfChannel(midiPacket_t* pk, transformerParms_t tp){
-    if (chn == tp.x) pb3 = tp.y;
+    if (pchn == tp.x) pb3 = tp.y;
 }
 
 void lib3m_splitKb(midiPacket_t* pk, transformerParms_t tp){
-    if (sts <= stsNOTEON)
-    if (pb2 > tp.x) 
-        pb1 = (sts | tp.y);
-     else 
-        pb1 = (sts | tp.z);
+    if (psts <= stsNOTEON){
+        if (pb2 > tp.x){ 
+            pb1 = (psts | tp.y);
+        } else {
+            pb1 = (psts | tp.z);
+        }
+    }
 }
 
 #endif

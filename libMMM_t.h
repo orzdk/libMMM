@@ -11,18 +11,16 @@
 
 #define L3M_CABLE_TR_UNIT           EEPROM_Params.cableTransformers[sourcePort]
 #define L3M_CABLE_TR_SLOT           L3M_CABLE_TR_UNIT.transformers[slot]
-#define L3M_CABLE_TR_IS_EVENT_TR    L3M_CABLE_TR_SLOT.tByte[0] == 0xB
 #define L3M_CABLE_TR_GATE           L3M_CABLE_TR_SLOT.tPacket.tGate.gate
 
 #define L3M_SERIAL_TR_UNIT          EEPROM_Params.serialTransformers[sourcePort]
 #define L3M_SERIAL_TR_SLOT          L3M_SERIAL_TR_UNIT.transformers[slot]
-#define L3M_SERIAL_TR_IS_EVENT_TR   L3M_SERIAL_TR_SLOT.tByte[0] == 0xB
 #define L3M_SERIAL_TR_GATE          L3M_CABLE_TR_SLOT.tPacket.tGate.gate
 
 #define BETWEEN(value, min, max) (value <= max && value >= min)
 
-#define sts (pk->packet[1] & 0xF0) 
-#define chn (pk->packet[1] & 0x0F)
+#define psts (pk->packet[1] & 0xF0)
+#define pchn (pk->packet[1] & 0x0F)
 #define pb1 pk->packet[1]
 #define pb2 pk->packet[2]
 #define pb3 pk->packet[3]
@@ -61,14 +59,13 @@ typedef union  {
 typedef struct {
       midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];
       uint8_t inUseCount;    
-} __packed channelTransformers_t; 
+} __packed portTransformerSlots_t; 
 
 
 struct tCommand{
     char* command;
     void (*fnFn)(midiPacket_t* pk, transformerParms_t tp);
 };
-
 
 enum tCodes{
     idl = 0x0,
@@ -85,7 +82,6 @@ enum tCodes{
     evm = 0xB,
     lsp = 0xC
 };
-
 
 uint8_t midiStatusValArr[23] = {
     0x80,
@@ -138,13 +134,5 @@ enum midiStatusValue {
     stsACTIVESENSE  = 0xFE,
     stsSYSTEMRESET  = 0xFF
 };   
-
-uint8_t IToSts(uint8_t tCode, uint8_t i){ 
-    return (tCode != 0xB) ? i : midiStatusValArr[i]; 
-}
-
-uint8_t StsToI(uint8_t tCode, uint8_t b1) { 
-    return (tCode != 0xB) ? b1 : b1 < 0xF1 ? (b1 >> 4) : ((b1 & 0x0F) -1) + 0x10; 
-}
 
 #endif
