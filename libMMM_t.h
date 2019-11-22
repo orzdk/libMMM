@@ -58,7 +58,7 @@ typedef union  {
 
 typedef struct {
       midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];
-      uint8_t inUseCount;    
+      uint8_t slotsInUse;    
 } __packed midiTransformerSlots_t; 
 
 
