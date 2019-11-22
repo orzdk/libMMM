@@ -9,13 +9,13 @@
 #define _LIB3M_T_H_
 #pragma once 
 
-#define L3M_CABLE_TR_UNIT           EEPROM_Params.cableTransformers[sourcePort]
+#define L3M_CABLE_TR_UNIT           EEPROM_Params.transformersCable[sourcePort]
 #define L3M_CABLE_TR_SLOT           L3M_CABLE_TR_UNIT.transformers[slot]
 #define L3M_CABLE_TR_GATE           L3M_CABLE_TR_SLOT.tPacket.tGate.gate
 
-#define L3M_SERIAL_TR_UNIT          EEPROM_Params.serialTransformers[sourcePort]
+#define L3M_SERIAL_TR_UNIT          EEPROM_Params.transformersSerial[sourcePort]
 #define L3M_SERIAL_TR_SLOT          L3M_SERIAL_TR_UNIT.transformers[slot]
-#define L3M_SERIAL_TR_GATE          L3M_CABLE_TR_SLOT.tPacket.tGate.gate
+#define L3M_SERIAL_TR_GATE          L3M_SERIAL_TR_SLOT.tPacket.tGate.gate
 
 #define BETWEEN(value, min, max) (value <= max && value >= min)
 
@@ -59,7 +59,7 @@ typedef union  {
 typedef struct {
       midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];
       uint8_t inUseCount;    
-} __packed portTransformerSlots_t; 
+} __packed midiTransformerSlots_t; 
 
 
 struct tCommand{
