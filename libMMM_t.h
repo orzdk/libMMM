@@ -17,8 +17,6 @@
 #define L3M_SERIAL_TR_SLOT          L3M_SERIAL_TR_UNIT.transformers[slot]
 #define L3M_SERIAL_TR_GATE          L3M_SERIAL_TR_SLOT.tPacket.tGate.gate
 
-#define BETWEEN(value, min, max) (value <= max && value >= min)
-
 #define psts (pk->packet[1] & 0xF0)
 #define pchn (pk->packet[1] & 0x0F)
 #define pb1 pk->packet[1]
