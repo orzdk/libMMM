@@ -8,82 +8,65 @@
 #ifndef _LIB3M_T_H_
 #define _LIB3M_T_H_
 #pragma once 
+  
+#define ct_slot  EEPROM_Params.transformersCable[sourcePort].transformers[slot]  
+#define ct_parms ct_slot.transformer.modParms
+#define ct_cmd   ct_slot.transformer.cmdIdx
+#define ct_fns   tCmd[ct_cmd]
 
-#define L3M_CABLE_TR_UNIT           EEPROM_Params.transformersCable[sourcePort]
-#define L3M_CABLE_TR_SLOT           L3M_CABLE_TR_UNIT.transformers[slot]
-#define L3M_CABLE_TR_GATE           L3M_CABLE_TR_SLOT.tPacket.tGate.gate
+#define st_slot  EEPROM_Params.transformersSerial[sourcePort].transformers[slot]  
+#define st_parms st_slot.transformer.modParms    
+#define st_cmd   st_slot.transformer.cmdIdx      
+#define st_fns   tCmd[st_cmd]
 
-#define L3M_SERIAL_TR_UNIT          EEPROM_Params.transformersSerial[sourcePort]
-#define L3M_SERIAL_TR_SLOT          L3M_SERIAL_TR_UNIT.transformers[slot]
-#define L3M_SERIAL_TR_GATE          L3M_SERIAL_TR_SLOT.tPacket.tGate.gate
-
-#define psts (pk->packet[1] & 0xF0)
-#define pchn (pk->packet[1] & 0x0F)
-#define pb1 pk->packet[1]
-#define pb2 pk->packet[2]
-#define pb3 pk->packet[3]
-
-typedef struct  {
-    uint8_t lower;
-    uint8_t upper;
-} __packed transformerStatusGate_t;
-
-typedef union  {
-    uint16_t i;
-    transformerStatusGate_t gate;
-} __packed transformerGate_t;
+#define p_psts  (pk->packet[1] & 0xF0)
+#define p_pchn  (pk->packet[1] & 0x0F)
 
 typedef struct  {
     uint8_t x;
     uint8_t y;
     uint8_t z;
-    uint8_t v;
-} __packed transformerParms_t;
+    uint8_t d; 
+    uint8_t s; 
+    uint8_t c;    
+} __packed trModParms_t;
 
 typedef struct  {
-    uint16_t tCmdCode;
-    transformerParms_t tParms; 
-    transformerGate_t tGate; 
-} __packed transformerPacket_t;
-
+    uint16_t cmdIdx;
+    trModParms_t modParms; 
+} __packed transformer_t;
 
 typedef union  { 
     uint64_t i;
-    uint8_t tByte[8]; 
-    transformerPacket_t tPacket; 
+    transformer_t transformer; 
 } __packed midiTransformer_t;
 
-
 typedef struct {
-      midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];
-      uint8_t slotsInUse;    
+    midiTransformer_t transformers[TRANSFORMERS_PR_CHANNEL];   
 } __packed midiTransformerSlots_t; 
 
-
 struct tCommand{
-    char* command;
-    void (*fnFn)(midiPacket_t* pk, transformerParms_t tp);
+    char* commandName;
+    void (*modFn)(midiPacket_t* pk, trModParms_t tp);
+    uint8_t (*gateFn)(midiPacket_t* pk); 
 };
 
 enum tCodes{
     idl = 0x0,
-    gtu = 0x1,
-    gtd = 0x2,
-    gvu = 0x3,
-    gvd = 0x4,
-    gvs = 0x5,
-    ctu = 0x6,
-    ctd = 0x7,
-    cvu = 0x8,
-    cvd = 0x9,
-    cvs = 0xA,
-    chs = 0xB,
-    chm = 0xC,
-    ccm = 0xD,
-    pcm = 0xE,
-    evm = 0xF,
-    lsp = 0x10
+    trn = 0x1,
+    trv = 0x2,
+    stv = 0x3,
+    ctn = 0x4,
+    ctv = 0x5,
+    cst = 0x6,
+    stc = 0x7,
+    mch = 0x8,
+    mcc = 0x9,
+    mpc = 0xA,
+    mev = 0xB,
+    lsp = 0xC
 };
+
 
 uint8_t midiStatusValArr[23] = {
     0x80,
