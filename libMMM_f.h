@@ -9,7 +9,6 @@
 #define _LIB3M_F_H_
 #pragma once 
 
-
 /* Gates */
 
 uint8_t lib3m_FALSE(midiPacket_t* pk){ 
@@ -36,7 +35,6 @@ uint8_t lib3m_sts_nm(midiPacket_t* pk){
     return pk->packet[1] < 0xF0;
 }
 
-
 /* Modifiers */
 
 void lib3m_IDLE(midiPacket_t* pk, trModParms_t tp){ 
@@ -52,11 +50,15 @@ void lib3m_OffsetB3(midiPacket_t* pk, trModParms_t tp){
 }
 
 void lib3m_ChannelOffsetB2(midiPacket_t* pk, trModParms_t tp){
-    if (tp.c-1 == p_pchn) pk->packet[2] += (((tp.s & 8) >> 3) ? -1 : 1);
+    if (tp.c-1 == p_pchn) pk->packet[2] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
 void lib3m_ChannelOffsetB3(midiPacket_t* pk, trModParms_t tp){
-    if (tp.c-1 == p_pchn) pk->packet[3] += (((tp.s & 8) >> 3) ? -1 : 1);
+    if (tp.c-1 == p_pchn) pk->packet[3] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
+}
+
+void lib3m_ChannelSetB3(midiPacket_t* pk, trModParms_t tp){
+    if (tp.c-1 == p_pchn) pk->packet[3] = tp.x;
 }
 
 void lib3m_SetB2(midiPacket_t* pk, trModParms_t tp){
@@ -65,10 +67,6 @@ void lib3m_SetB2(midiPacket_t* pk, trModParms_t tp){
 
 void lib3m_SetB3(midiPacket_t* pk, trModParms_t tp){
     pk->packet[3] = tp.x;
-}
-
-void lib3m_ChannelSetB3(midiPacket_t* pk, trModParms_t tp){
-    if (tp.c-1 == p_pchn) pk->packet[3] = tp.x;
 }
 
 void lib3m_SetChannel(midiPacket_t* pk, trModParms_t tp){
