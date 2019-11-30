@@ -43,20 +43,20 @@ void lib3m_IDLE(midiPacket_t* pk, trModParms_t tp){
 
 }
 
-void lib3m_OffsetChannelB2(midiPacket_t* pk, trModParms_t tp){
-    pk->packet[2] += (tp.c == p_pchn) * (tp.x * (((tp.s & 8) >> 3) * -1));
-}
-
-void lib3m_OffsetChannelB3(midiPacket_t* pk, trModParms_t tp){
-    pk->packet[3] += (tp.c == p_pchn) * (tp.x * (((tp.s & 8) >> 3) * -1));
-}
-
 void lib3m_OffsetB2(midiPacket_t* pk, trModParms_t tp){
-    pk->packet[2] += tp.x * (((tp.s & 8) >> 3) * -1);
+    pk->packet[2] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
 void lib3m_OffsetB3(midiPacket_t* pk, trModParms_t tp){
-    pk->packet[3] += tp.x * (((tp.s & 8) >> 3) * -1);
+    pk->packet[3] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
+}
+
+void lib3m_ChannelOffsetB2(midiPacket_t* pk, trModParms_t tp){
+    if (tp.c-1 == p_pchn) pk->packet[2] += (((tp.s & 8) >> 3) ? -1 : 1);
+}
+
+void lib3m_ChannelOffsetB3(midiPacket_t* pk, trModParms_t tp){
+    if (tp.c-1 == p_pchn) pk->packet[3] += (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
 void lib3m_SetB2(midiPacket_t* pk, trModParms_t tp){
@@ -67,8 +67,12 @@ void lib3m_SetB3(midiPacket_t* pk, trModParms_t tp){
     pk->packet[3] = tp.x;
 }
 
+void lib3m_ChannelSetB3(midiPacket_t* pk, trModParms_t tp){
+    if (tp.c-1 == p_pchn) pk->packet[3] = tp.x;
+}
+
 void lib3m_SetChannel(midiPacket_t* pk, trModParms_t tp){
-    pk->packet[1] = p_psts | tp.x;
+    pk->packet[1] = p_psts | (tp.x - 1);
 }
 
 void lib3m_MapB1(midiPacket_t* pk, trModParms_t tp){
@@ -80,18 +84,15 @@ void lib3m_MapB2(midiPacket_t* pk, trModParms_t tp){
 }
 
 void lib3m_MapChannel(midiPacket_t* pk, trModParms_t tp){
-    if (p_pchn == tp.x) pk->packet[1] = p_psts | tp.y;
+    if (p_pchn == tp.x - 1) pk->packet[1] = p_psts | (tp.y - 1);
 }
 
 void lib3m_SplitKb(midiPacket_t* pk, trModParms_t tp){
-    if (p_psts <= stsNOTEON){
-        if (pk->packet[2] > tp.x){ 
-            pk->packet[1] = (p_psts | tp.y);
-        } else {
-            pk->packet[1] = (p_psts | tp.z);
-        }
+    if (pk->packet[2] > tp.x){ 
+        pk->packet[1] = (p_psts | tp.y);
+    } else {
+        pk->packet[1] = (p_psts | tp.z);
     }
-
 }
 
 #endif
