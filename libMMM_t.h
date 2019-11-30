@@ -8,7 +8,7 @@
 #ifndef _LIB3M_T_H_
 #define _LIB3M_T_H_
 #pragma once 
-  
+
 #define ct_slot  EEPROM_Params.transformersCable[sourcePort].transformers[slot]  
 #define ct_parms ct_slot.transformer.modParms
 #define ct_cmd   ct_slot.transformer.cmdIdx

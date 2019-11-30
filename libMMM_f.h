@@ -17,7 +17,7 @@ uint8_t lib3m_FALSE(midiPacket_t* pk){
 }
 
 uint8_t lib3m_sts_note(midiPacket_t* pk){
-    return pk->packet[1]-0x80<=0x1F;
+    return (unsigned)(pk->packet[1]-0x80)<=0x1F;
 }
 
 uint8_t lib3m_sts_cc(midiPacket_t* pk){
