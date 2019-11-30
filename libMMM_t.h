@@ -9,15 +9,15 @@
 #define _LIB3M_T_H_
 #pragma once 
 
-#define ct_slot  EEPROM_Params.transformersCable[sourcePort].transformers[slot]  
-#define ct_parms ct_slot.transformer.modParms
-#define ct_cmd   ct_slot.transformer.cmdIdx
-#define ct_fns   tCmd[ct_cmd]
+#define cts_slot(s)  EEPROM_Params.transformersCable[sourcePort].transformers[s]  
+#define cts_parms(s) cts_slot(s).transformer.modParms
+#define cts_cmd(s)   cts_slot(s).transformer.cmdIdx
+#define cts_fns(s)   tCmd[cts_cmd(s)]
 
-#define st_slot  EEPROM_Params.transformersSerial[sourcePort].transformers[slot]  
-#define st_parms st_slot.transformer.modParms    
-#define st_cmd   st_slot.transformer.cmdIdx      
-#define st_fns   tCmd[st_cmd]
+#define sts_slot(s)  EEPROM_Params.transformersSerial[sourcePort].transformers[s]  
+#define sts_parms(s) sts_slot(s).transformer.modParms    
+#define sts_cmd(s)   sts_slot(s).transformer.cmdIdx      
+#define sts_fns(s)   tCmd[sts_cmd(s)]
 
 #define p_psts  (pk->packet[1] & 0xF0)
 #define p_pchn  (pk->packet[1] & 0x0F)
