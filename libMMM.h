@@ -24,7 +24,10 @@ const struct tCommand tCmd[] = {
     {"mcc", &lib3m_MapB2,           &lib3m_sts_cc    }, // 0x9: Map CC
     {"mpc", &lib3m_MapB2,           &lib3m_sts_pc    }, // 0xA: Map ProgChg
     {"mev", &lib3m_MapB1,           &lib3m_sts_rt    }, // 0xB: Map Event
-    {"lsp", &lib3m_SplitKb,         &lib3m_sts_note  }  // 0xC: Split Notes
+    {"lsp", &lib3m_SplitKb,         &lib3m_sts_note  }, // 0xC: Split Notes
+    {"xx1", &lib3m_IDLE,            &lib3m_FALSE     }, // 0xD: Idle
+    {"xx2", &lib3m_IDLE,            &lib3m_FALSE     }, // 0xE: Idle
+    {"xx3", &lib3m_IDLE,            &lib3m_FALSE     }  // 0xF: Idle
 };
 
 uint8_t midiStatusValArr[23] = {
