@@ -76,8 +76,8 @@ void lib3m_SetChannel(midiPacket_t* pk, trModParms_t tp){
     pk->packet[1] = p_psts | (tp.x - 1);
 }
 
-void lib3m_MapB1(midiPacket_t* pk, trModParms_t tp){
-    if (pk->packet[1] == tp.x) pk->packet[1] = tp.y;
+void lib3m_MapEvent(midiPacket_t* pk, trModParms_t tp){
+    if (pk->packet[1] == midiStatusValArr[tp.x] ) pk->packet[1] = midiStatusValArr[tp.y];
 }
 
 void lib3m_MapB2(midiPacket_t* pk, trModParms_t tp){

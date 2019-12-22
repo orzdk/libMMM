@@ -25,7 +25,6 @@ typedef struct  {
     uint8_t x;
     uint8_t y;
     uint8_t z;
-    uint8_t d; 
     uint8_t s;    
 } __packed trModParms_t;
 

@@ -23,27 +23,39 @@ const struct tCommand tCmd[] = {
     {"stc", &lib3m_SetChannel,      &lib3m_sts_nm    }, // 0x8: Set channel
     {"mcc", &lib3m_MapB2,           &lib3m_sts_cc    }, // 0x9: Map CC
     {"mpc", &lib3m_MapB2,           &lib3m_sts_pc    }, // 0xA: Map ProgChg
-    {"mev", &lib3m_MapB1,           &lib3m_sts_rt    }, // 0xB: Map Event
+    {"mev", &lib3m_MapEvent,        &lib3m_sts_rt    }, // 0xB: Map Event
     {"lsp", &lib3m_SplitKb,         &lib3m_sts_note  }, // 0xC: Split Notes
-    {"xx1", &lib3m_IDLE,            &lib3m_FALSE     }, // 0xD: Idle
-    {"xx2", &lib3m_IDLE,            &lib3m_FALSE     }, // 0xE: Idle
-    {"xx3", &lib3m_IDLE,            &lib3m_FALSE     }  // 0xF: Idle
+    {"idl", &lib3m_IDLE,            &lib3m_FALSE     }, // 0xD: Idle
+    {"idl", &lib3m_IDLE,            &lib3m_FALSE     }, // 0xE: Idle
+    {"idl", &lib3m_IDLE,            &lib3m_FALSE     }  // 0xF: Idle
 };
 
 uint8_t midiStatusValArr[23] = {
-    0x80,    0x90,    0xA0,    0xB0,    0xC0,    0xD0,    
-    0xE0,    0xF0,    0xF1,    0xF2,    0xF3,    0xF4,    
-    0xF5,    0xF6,    0xF7,    0xF8,    0xF9,    0xFA,    
-    0xFB,    0xFC,    0xFD,    0xFE,    0xFF
+    0x80, // 1   
+    0x90, // 2   
+    0xA0, // 3   
+    0xB0, // 4   
+    0xC0, // 5   
+    0xD0, // 6   
+    0xE0, // 7   
+    0xF0, // 8   
+    0xF1, // 9   
+    0xF2, // 10   
+    0xF3, // 11   
+    0xF4, // 12   
+    0xF5, // 13   
+    0xF6, // 14   
+    0xF7, // 15   
+    0xF8, // 16  
+    0xF9, // 17  
+    0xFA, // 18   
+    0xFB, // 19  
+    0xFC, // 20   
+    0xFD, // 21   
+    0xFE, // 22   
+    0xFF  // 23
 };
 
-uint8_t decBigByte(uint8_t val, uint8_t decode){ 
-    return decode ? midiStatusValArr[val] : val; 
-}
-
-uint8_t encBigByte(uint8_t val) { 
-    return val <= 0x7F ? val : val <= 0xF0 ? (val >> 4) - 8 : ((val & 0x0F) -1) + 0x10; 
-}
 
 #endif
 

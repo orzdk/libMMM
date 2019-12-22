@@ -10,14 +10,14 @@
 #pragma once 
 
 
-struct cliCommand{
+struct controlCommand{
     uint8_t commandIndex;
     uint8_t parameterCount;    
     char* commandTitle;    
     char* parameterTitles[3];
 };
 
-const struct cliCommand cCmd[] = {
+const struct controlCommand cCmd[] = {
     {0x0, 0, "None",                {}                                  }, // 0x1: No transform
     {0x1, 1, "Transp Nt",           {"Value",}                          }, // 0x1: Transpose note
     {0x2, 1, "Offset Vel",          {"Value",}                          }, // 0x2: Offset velocity
