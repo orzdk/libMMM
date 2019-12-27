@@ -9,6 +9,32 @@
 #define _LIB3M_F_H_
 #pragma once 
 
+uint8_t midiStatusValArr[23] = {
+    0x80, // 1  Note off 
+    0x90, // 2  Note on 
+    0xA0, // 3  Poly Aftertouch 
+    0xB0, // 4  CC 
+    0xC0, // 5  PC  
+    0xD0, // 6  Channel Aftertouch 
+    0xE0, // 7  Pitch Wheel 
+    0xF0, // 8  sysex 
+    0xF1, // 9  common, undefined 
+    0xF2, // 10 common, song pointer  
+    0xF3, // 11 common, song select  
+    0xF4, // 12 common, undefined   
+    0xF5, // 13 common, undefined  
+    0xF6, // 14 common, tune request  
+    0xF7, // 15 EOX  
+    0xF8, // 16 realtime, clock
+    0xF9, // 17 realtime, undefined
+    0xFA, // 18 realtime, start 
+    0xFB, // 19 realtime, stop
+    0xFC, // 20 realtime, continue
+    0xFD, // 21 realtime, undefined
+    0xFE, // 22 realtime, active sensing 
+    0xFF  // 23 realtime, sysreset
+};
+
 #define p_psts  (pk->packet[1] & 0xF0)
 #define p_pchn  (pk->packet[1] & 0x0F)
 

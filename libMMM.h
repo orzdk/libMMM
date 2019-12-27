@@ -30,32 +30,6 @@ const struct tCommand tCmd[] = {
     {"idl", &lib3m_IDLE,            &lib3m_FALSE     }  // 0xF: Idle
 };
 
-uint8_t midiStatusValArr[23] = {
-    0x80, // 1   
-    0x90, // 2   
-    0xA0, // 3   
-    0xB0, // 4   
-    0xC0, // 5   
-    0xD0, // 6   
-    0xE0, // 7   
-    0xF0, // 8   
-    0xF1, // 9   
-    0xF2, // 10   
-    0xF3, // 11   
-    0xF4, // 12   
-    0xF5, // 13   
-    0xF6, // 14   
-    0xF7, // 15   
-    0xF8, // 16  
-    0xF9, // 17  
-    0xFA, // 18   
-    0xFB, // 19  
-    0xFC, // 20   
-    0xFD, // 21   
-    0xFE, // 22   
-    0xFF  // 23
-};
-
 
 #endif
 
