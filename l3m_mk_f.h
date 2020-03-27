@@ -1,7 +1,7 @@
 
 /*  LIB3M 
     Jesper Christensen 2019
-    Transformer Functions
+    USBMidiKlik4x4 Transfomer Function Library Header
     https://github.com/orzdk/libMMM
 */
 
@@ -66,55 +66,55 @@ uint8_t lib3m_sts_nm(midiPacket_t* pk){
 
 /* Modifiers */
 
-void lib3m_IDLE(midiPacket_t* pk, trModParms_t tp){ 
+void lib3m_IDLE(midiPacket_t* pk, transParms_t tp){ 
 
 }
 
-void lib3m_OffsetB2(midiPacket_t* pk, trModParms_t tp){
+void lib3m_OffsetB2(midiPacket_t* pk, transParms_t tp){
     pk->packet[2] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
-void lib3m_OffsetB3(midiPacket_t* pk, trModParms_t tp){
+void lib3m_OffsetB3(midiPacket_t* pk, transParms_t tp){
     pk->packet[3] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
-void lib3m_ChannelOffsetB2(midiPacket_t* pk, trModParms_t tp){
+void lib3m_ChannelOffsetB2(midiPacket_t* pk, transParms_t tp){
     if (tp.y-1 == p_pchn) pk->packet[2] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
-void lib3m_ChannelOffsetB3(midiPacket_t* pk, trModParms_t tp){
+void lib3m_ChannelOffsetB3(midiPacket_t* pk, transParms_t tp){
     if (tp.y-1 == p_pchn) pk->packet[3] += tp.x * (((tp.s & 8) >> 3) ? -1 : 1);
 }
 
-void lib3m_ChannelSetB3(midiPacket_t* pk, trModParms_t tp){
+void lib3m_ChannelSetB3(midiPacket_t* pk, transParms_t tp){
     if (tp.y-1 == p_pchn) pk->packet[3] = tp.x;
 }
 
-void lib3m_SetB2(midiPacket_t* pk, trModParms_t tp){
+void lib3m_SetB2(midiPacket_t* pk, transParms_t tp){
     pk->packet[2] = tp.x;
 }
 
-void lib3m_SetB3(midiPacket_t* pk, trModParms_t tp){
+void lib3m_SetB3(midiPacket_t* pk, transParms_t tp){
     pk->packet[3] = tp.x;
 }
 
-void lib3m_SetChannel(midiPacket_t* pk, trModParms_t tp){
+void lib3m_SetChannel(midiPacket_t* pk, transParms_t tp){
     pk->packet[1] = p_psts | (tp.x - 1);
 }
 
-void lib3m_MapEvent(midiPacket_t* pk, trModParms_t tp){
+void lib3m_MapEvent(midiPacket_t* pk, transParms_t tp){
     if (pk->packet[1] == midiStatusValArr[tp.x] ) pk->packet[1] = midiStatusValArr[tp.y];
 }
 
-void lib3m_MapB2(midiPacket_t* pk, trModParms_t tp){
+void lib3m_MapB2(midiPacket_t* pk, transParms_t tp){
     if (pk->packet[2] == tp.x) pk->packet[2] = tp.y;
 }
 
-void lib3m_MapChannel(midiPacket_t* pk, trModParms_t tp){
+void lib3m_MapChannel(midiPacket_t* pk, transParms_t tp){
     if (p_pchn == tp.x - 1) pk->packet[1] = p_psts | (tp.y - 1);
 }
 
-void lib3m_SplitKb(midiPacket_t* pk, trModParms_t tp){
+void lib3m_SplitKb(midiPacket_t* pk, transParms_t tp){
     if (pk->packet[2] > tp.x){ 
         pk->packet[1] = (p_psts | tp.y);
     } else {
